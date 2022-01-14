@@ -7,10 +7,11 @@ const fileRegex = /(\w+)_(\d+)_(\d+)_(\d+)_(\w+)\.*/
 let modelView = null
 let field = null
 let arg = new colorSetting()
-const controlView = new ControlView(document.getElementById('palette'), arg)
+const palette = document.getElementById('palette')
+const controlView = new ControlView(palette, arg)
 
 const getColormap = () => {
-    const color = new Uint8ClampedArray(256 * 4)
+    let color = new Uint8ClampedArray(256 * 4)
     for (let i = 0; i < 256; i++) {
         color[4 * i] = arg.rgba[0][i] * 255
         color[4 * i + 1] = arg.rgba[1][i] * 255
@@ -60,9 +61,11 @@ const init = () => {
     document.querySelectorAll('input[name=rtype]').forEach((option) => {
         option.addEventListener('click', () => {
             arg.renderType = option.value == 'mips' ? 0 : 1
-            controlView.updateRGBA()
+            modelView.renderVolume(field, getColormap(), arg)
         })
     })
+
+    palette.addEventListener('click', () => controlView.updateRGBA())
 
     arg.renderType = 0
 
@@ -88,6 +91,7 @@ window.onload = () => {
     //當調色盤的參數變更時，觸發事件
     controlView.addEventListener('change', () => {
         if (!field) return
-        modelView.renderVolume(field, getColormap(), arg)
+        let colormap = getColormap()
+        modelView.renderVolume(field, colormap, arg)
     })
 }
