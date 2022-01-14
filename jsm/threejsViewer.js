@@ -123,7 +123,7 @@ class threejsViewer {
         }
         else {
             mesh.material.uniforms['u_cmdata'].value.image = { data: colormap, width: 256, height: 1 }
-            mesh.material.uniforms['u_cmdata'].value.needUpdate = true
+            mesh.material.uniforms['u_cmdata'].value.needsUpdate = true
 
             mesh.material.uniforms['u_renderstyle'].value = arg.renderType
             mesh.material.uniforms["u_renderthreshold"].value = arg.renderType == 1 ? 0.15 : 1
